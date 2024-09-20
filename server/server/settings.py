@@ -22,16 +22,15 @@ DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
-    'nutriscan-1ahz.onrender.com'
+    '0.0.0.0',
     ]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://nutriscann.vercel.app",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
-    "https://nutriscann.vercel.app",
+
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -42,14 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api',
-    'bot',
-    'testimonials',
-    'user_profile',
-    'rest_framework',
-    'corsheaders',
-    'disease_algorithm',
-    'videocall'
+    'user'
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -149,13 +141,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 #  Authentication 
-AUTH_USER_MODEL = 'api.User'
-
-
-# Email configuration
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+# AUTH_USER_MODEL = 'user.User'
