@@ -1,0 +1,31 @@
+# docker-compose.yml
+
+version: "3.8"
+
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"  # Map Nginx port to localhost
+    networks:
+      - app-network
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    command: gunicorn --workers 3 --bind 0.0.0.0:8000 server.wsgi:application
+    volumes:
+      - ./server:/app  # Mount the server directory for live changes
+    ports:
+      - "8000:8000"  # Map Gunicorn port to localhost
+    depends_on:
+      - client
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
