@@ -16,7 +16,7 @@ To set up and run NutriScan locally, follow these steps:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/Fareed95/AF-KAJ-BUTTON
+   git clone https://github.com/Fareed95/AFKB
    cd AF-KAJ-BUTTON
 2. **START THE PROJECT**
    ```bash
