@@ -1,8 +1,8 @@
 #!/bin/bash
 ############################################
 # AUTHOR : FAREED SAYED
-# DATE : 01 SEPTEMBER 2024 
-# TO EXECUTE PROPER GITHUB 
+# DATE : 01 SEPTEMBER 2024
+# TO EXECUTE PROPER GITHUB
 ############################################
 
 # Prompt for commit message

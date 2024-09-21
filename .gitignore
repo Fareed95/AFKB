@@ -1,11 +1,11 @@
-myenv 
-venv 
-.myenv 
-.env 
-.venv 
+myenv
+venv
+.myenv
+.env
+.venv
 __pycache__
 /venv
-/myenv 
+/myenv
 # --- General ---
 node_modules/
 .env

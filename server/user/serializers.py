@@ -8,10 +8,10 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'name', 
+            'name',
             'email',
-            'password', 
-            'confirm_password', 
+            'password',
+            'confirm_password',
             'shops'
             ]
         extra_kwargs = {
@@ -21,7 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
     def validate(self, data):
         password = data.get('password')
         confirm_password = data.pop('confirm_password', None)
-        
+
         if password != confirm_password:
             raise serializers.ValidationError({"confirm_password": "Passwords do not match."})
 

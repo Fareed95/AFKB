@@ -30,5 +30,5 @@ class Shops_serializer(serializers.ModelSerializer):
                 instance.user = user
             except User.DoesNotExist:
                 raise serializers.ValidationError(f"No user found with email {user_email}")
-        
+
         return super().update(instance, validated_data)
