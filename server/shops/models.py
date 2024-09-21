@@ -7,7 +7,6 @@ class Shops(models.Model):
     shirt_price = models.DecimalField( max_digits=5, decimal_places=2)
     pants_price = models.DecimalField( max_digits=5, decimal_places=2)
     safari_price = models.DecimalField( max_digits=5, decimal_places=2)
-    custom_price = models.DecimalField( max_digits=5, decimal_places=2)
     user = models.ForeignKey(User,related_name='shops', on_delete=models.CASCADE)
 
 

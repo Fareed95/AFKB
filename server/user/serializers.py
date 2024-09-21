@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from .models import User
+from shops.serializers import Shops_serializer
 class UserSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True)
+    shops =  Shops_serializer(many=True, read_only=True)
 
     class Meta:
         model = User
@@ -10,6 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
             'email',
             'password', 
             'confirm_password', 
+            'shops'
             ]
         extra_kwargs = {
             'password': {'write_only': True},
