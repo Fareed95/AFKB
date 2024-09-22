@@ -9,7 +9,7 @@ To set up and run NutriScan locally, follow these steps:
 
 ### Prerequisites
 
-1. **Install Docker Desktop:**  
+1. **Install Docker Desktop:**
    Ensure that Docker Desktop is installed on your system. You can download it [here](https://www.docker.com/products/docker-desktop/).
 
 ### Installation

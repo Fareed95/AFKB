@@ -1,0 +1,64 @@
+<!-- templates/invoice_template.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .invoice {
+            margin: 0 auto;
+            width: 80%;
+        }
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .invoice-table th, .invoice-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        .total {
+            text-align: right;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Invoice</h1>
+        <p>Date: {{ date }}</p>
+    </div>
+    <div class="invoice">
+        <table class="invoice-table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.unit_price }}</td>
+                    <td>{{ item.total }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="total">
+        <h3>Total Amount: ${{ total_amount }}</h3>
+    </div>
+</body>
+</html>

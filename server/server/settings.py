@@ -25,11 +25,11 @@ ALLOWED_HOSTS = [
     '0.0.0.0',
     ]
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    "http://localhost:5173",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
+    "http://localhost:5173",
 
 ]
 
@@ -41,7 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user'
+    'rest_framework',
+    'user',
+    'shops',
+    'days',
+    'billing'
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -136,9 +140,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-#  Managing media directory 
+#  Managing media directory
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-#  Authentication 
-# AUTH_USER_MODEL = 'user.User'
+#  Authentication
+AUTH_USER_MODEL = 'user.User'
