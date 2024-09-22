@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './App.css';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div>
+      <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000 }}>
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger className="navigation-menu-trigger">Item One</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <NavigationMenuLink className="navigation-menu-link">Link</NavigationMenuLink>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            {/* Repeat for other items */}
+            <NavigationMenuItem>
+              <NavigationMenuTrigger className="navigation-menu-trigger">Item Two</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <NavigationMenuLink className="navigation-menu-link">Link</NavigationMenuLink>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            {/* Add more items as needed */}
+          </NavigationMenuList>
+        </NavigationMenu>
+      </nav>
+      <div style={{ marginTop: '60px' }}>
+        {/* Your main content goes here */}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
