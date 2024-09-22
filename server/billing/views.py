@@ -1,8 +1,9 @@
-# views.py
 from django.http import HttpResponse
-from django.template.loader import get_template
-from weasyprint import HTML
+from django.template.loader import render_to_string
+from weasyprint import HTML, CSS
 import datetime
+import os
+from django.conf import settings
 
 def generate_invoice(request):
     # Sample data to be rendered in the PDF
@@ -12,21 +13,24 @@ def generate_invoice(request):
     ]
     total_amount = sum(item['total'] for item in items)
 
+    # Context to pass to the template
     context = {
         'date': datetime.date.today(),
         'items': items,
-        'total_amount': total_amount
+        'total_amount': total_amount,
+        'invoice_number': 'INV-12345',
+        'customer_name': 'John Doe',
+        'company_name': 'Your Company',
     }
 
-    # Load the HTML template
-    template = get_template('invoice_template.html')
-    html_content = template.render(context)
+    # Load and render the HTML template
+    html_content = render_to_string('invoice_template.html', context)
 
-    # Convert the HTML to a PDF
+    # Generate the PDF and send it as an attachment
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="invoice.pdf"'
 
-    # Generate PDF
+    # Generate the PDF using WeasyPrint
     HTML(string=html_content).write_pdf(response)
 
     return response

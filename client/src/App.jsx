@@ -1,40 +1,28 @@
-import './App.css';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
+import { BrowserRouter as Router, Route, Routes, useLocation, Link } from 'react-router-dom';
+import ResponsiveAppBar from './components/AppBar';
+import Login from './pages/Login'; // Import the Login component
+import Home from './pages/Home'; // Import the Home component
 
 function App() {
   return (
-    <div>
-      <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000 }}>
-        <NavigationMenu>
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger className="navigation-menu-trigger">Item One</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <NavigationMenuLink className="navigation-menu-link">Link</NavigationMenuLink>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            {/* Repeat for other items */}
-            <NavigationMenuItem>
-              <NavigationMenuTrigger className="navigation-menu-trigger">Item Two</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <NavigationMenuLink className="navigation-menu-link">Link</NavigationMenuLink>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            {/* Add more items as needed */}
-          </NavigationMenuList>
-        </NavigationMenu>
-      </nav>
-      <div style={{ marginTop: '60px' }}>
-        {/* Your main content goes here */}
-      </div>
-    </div>
+    <Router>
+      <MainLayout />
+    </Router>
+  );
+}
+
+function MainLayout() {
+  const location = useLocation();
+
+  return (
+    <>
+      {location.pathname !== '/login' && <ResponsiveAppBar />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/home" element={<Home />} /> {/* Ensure Home route is defined */}
+      </Routes>
+    </>
   );
 }
 

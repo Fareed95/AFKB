@@ -40,16 +40,3 @@
 .read-the-docs {
   color: #888;
 }
-.navigation-menu-link {
-  font-size: 18px; /* Adjust size as needed */
-  padding: 12px 16px;
-  margin: 32px;/* Adjust padding as needed */
-  /* You can also add more styles, like background color or border */
-}
-
-.navigation-menu-trigger {
-  font-size: 32px; /* Adjust size as needed */
-  padding: 12px 16px;
-  margin: 32px;/* Adjust padding as needed */
-}
-
