@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'user',
     'shops',
-    'days'
+    'days',
+    'billing'
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
