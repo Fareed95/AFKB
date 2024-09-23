@@ -1,5 +1,3 @@
-# docker-compose.yml
-
 version: "3.8"
 
 services:
@@ -8,7 +6,7 @@ services:
       context: ./client
       dockerfile: Dockerfile
     ports:
-      - "3000:80"  # Map Nginx port to localhost
+      - "5173:5173"  # Map client port to localhost
     networks:
       - app-network
 
@@ -20,7 +18,7 @@ services:
     volumes:
       - ./server:/app  # Mount the server directory for live changes
     ports:
-      - "8000:8000"  # Map Gunicorn port to localhost
+      - "8000:8000"  # Map server port to localhost
     depends_on:
       - client
     networks:
@@ -28,4 +26,3 @@ services:
 
 networks:
   app-network:
-
