@@ -8,6 +8,8 @@ class Shops(models.Model):
     pants_price = models.DecimalField( max_digits=5, decimal_places=2)
     safari_price = models.DecimalField( max_digits=5, decimal_places=2)
     user = models.ForeignKey(User,related_name='shops', on_delete=models.CASCADE)
+    total  = models.DecimalField( max_digits=5, decimal_places=2,default=0)
+    remaining_balance = models.DecimalField( max_digits=5, decimal_places=2, default=0)
 
 
     def  __str__(self):
