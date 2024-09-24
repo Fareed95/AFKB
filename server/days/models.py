@@ -8,8 +8,7 @@ class Day(models.Model):
     shirts_updated = models.IntegerField(default=0)
     pants_updated = models.IntegerField(default=0)
     safari_updated = models.IntegerField(default=0)
-    each_day_total = models.DecimalField( max_digits=5, decimal_places=2, default=0)
-
+    each_day_total = models.FloatField(default=0.0)
     class Meta:
         unique_together = ('shop', 'date')  # One entry per shop per day
 
