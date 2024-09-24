@@ -6,9 +6,9 @@ from shops.models import Shops
 class DaySerializer(serializers.ModelSerializer):
     date = serializers.DateField(read_only=True)  # Make date read-only
     shop = serializers.PrimaryKeyRelatedField(queryset=Shops.objects.all())  # Include the shop field
-    shirt_price = serializers.FloatField(source='shop.shirt_price')
-    pants_price = serializers.FloatField(source='shop.pants_price')
-    safari_price = serializers.FloatField(source='shop.safari_price')
+    shirt_price = serializers.DecimalField(source='shop.shirt_price', max_digits=5, decimal_places=2)
+    pants_price = serializers.DecimalField(source='shop.pants_price', max_digits=5, decimal_places=2)
+    safari_price = serializers.DecimalField(source='shop.safari_price', max_digits=5, decimal_places=2)
 
     class Meta:
         model = Day
@@ -23,6 +23,9 @@ class DaySerializer(serializers.ModelSerializer):
         shirts_updated = validated_data.get('shirts_updated', 0)
         pants_updated = validated_data.get('pants_updated', 0)
         safari_updated = validated_data.get('safari_updated', 0)
+
+
+        # Check if a record already exists for this shop and date
         try:
             day_record = Day.objects.get(shop=shop, date=date)
             # If it exists, update the existing record
@@ -32,6 +35,4 @@ class DaySerializer(serializers.ModelSerializer):
             day_record.save()
             return day_record
         except Day.DoesNotExist:
-            # Create a new record if it doesn't exist
-# Set the calculated total
             return super().create(validated_data)

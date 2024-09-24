@@ -16,7 +16,9 @@ class Shops_serializer(serializers.ModelSerializer):
             'pants_price',
             'safari_price',
             'email',
-            'days'  # Include days as serialized data
+            'days' ,
+            'total',
+            'remaining_balance' # Include days as serialized data
         ]
         extra_kwargs = {'user': {'write_only': True}}
 
