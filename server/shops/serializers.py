@@ -6,6 +6,7 @@ from days.serializers import DaySerializer
 class Shops_serializer(serializers.ModelSerializer):
     email = serializers.EmailField(write_only=True)  # Accept email in input
     days = DaySerializer(many=True, read_only=True)  # Use DaySerializer for the days field
+    day_histories = DaySerializer(many=True, read_only=True)  # Use DaySerializer for the days field
     total = serializers.FloatField(read_only=True)  # Total field, read-only as we calculate it
     amount_to_bill = serializers.FloatField(read_only=True)  # Read-only field for calculated amount
 
@@ -19,6 +20,7 @@ class Shops_serializer(serializers.ModelSerializer):
             'safari_price',
             'email',
             'days',
+            'day_histories',
             'total',
             'remaining_balance',
             'amount_to_bill'  # New field for total + remaining_balance
