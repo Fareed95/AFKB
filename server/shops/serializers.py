@@ -1,14 +1,18 @@
 from rest_framework import serializers
 from .models import Shops
 from user.models import User
+from days.models import Day
 from days.serializers import DaySerializer
+from decimal import Decimal
 
 class Shops_serializer(serializers.ModelSerializer):
-    email = serializers.EmailField(write_only=True)  # Accept email in input
-    days = DaySerializer(many=True, read_only=True)  # Use DaySerializer for the days field
-    total = serializers.FloatField(read_only=True)  # Total field, read-only as we calculate it
-    amount_to_bill = serializers.FloatField(read_only=True)  # Read-only field for calculated amount
-
+    email = serializers.EmailField(write_only=True)
+    days = DaySerializer(many=True, read_only=True)
+    day_histories = DaySerializer(many=True, read_only=True)
+    total = serializers.FloatField(read_only=True)
+    amount_to_bill = serializers.FloatField(read_only=True)
+    amount_paid = serializers.FloatField(write_only=True, required=False)
+    remaining_balance = serializers.FloatField(read_only=True)
     class Meta:
         model = Shops
         fields = [
@@ -19,16 +23,18 @@ class Shops_serializer(serializers.ModelSerializer):
             'safari_price',
             'email',
             'days',
+            'day_histories',
             'total',
             'remaining_balance',
-            'amount_to_bill'  # New field for total + remaining_balance
+            'amount_to_bill',
+            'amount_paid'
         ]
         extra_kwargs = {'user': {'write_only': True}}
 
     def create(self, validated_data):
         user_email = validated_data.pop('email')
         try:
-            user = User.objects.get(email=user_email)  # Fetch user by email
+            user = User.objects.get(email=user_email)
         except User.DoesNotExist:
             raise serializers.ValidationError(f"No user found with email {user_email}")
 
@@ -37,6 +43,9 @@ class Shops_serializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         user_email = validated_data.pop('email', None)
+        amount_paid = Decimal(validated_data.pop('amount_paid', 0))
+
+        # Update user if the email is provided
         if user_email:
             try:
                 user = User.objects.get(email=user_email)
@@ -44,20 +53,25 @@ class Shops_serializer(serializers.ModelSerializer):
             except User.DoesNotExist:
                 raise serializers.ValidationError(f"No user found with email {user_email}")
 
+        # Calculate total sum from related days
+        total_sum = sum(Decimal(day.each_day_total) for day in instance.days.all())
+        updated_balance = total_sum - amount_paid
+
+        # Update the remaining balance using filter method
+        Shops.objects.filter(id=instance.id).update(remaining_balance=updated_balance)
+
+        # Step 5: Delete all day records after calculating the total
+        Day.objects.filter(shop=instance).delete()
+
+        # Save the instance
+        instance.save()  # Save to update any other fields or changes
+
         return super().update(instance, validated_data)
 
     def to_representation(self, instance):
-        # First, get the original serialized data
         representation = super().to_representation(instance)
-
-        # Calculate the total of all `each_day_total` from days
         total_sum = sum(day['each_day_total'] for day in representation['days'])
-
-        # Get the remaining_balance, ensuring it's a float for calculations
         remaining_balance = float(representation.get('remaining_balance', 0.0))
-
-        # Update the total and amount_to_bill dynamically
         representation['total'] = total_sum
-        representation['amount_to_bill'] = total_sum + remaining_balance  # Calculate amount_to_bill
-
+        representation['amount_to_bill'] = total_sum + remaining_balance
         return representation
