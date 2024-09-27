@@ -1,4 +1,3 @@
-<!-- templates/invoice_template.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,59 +5,74 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            font-size: 12px; /* Smaller base font */
         }
         .header {
-            text-align: center;
-            margin-bottom: 30px;
+            text-align: left;
+            margin-bottom: 20px;
         }
         .invoice {
             margin: 0 auto;
-            width: 80%;
+            width: 90%; /* Slightly wider for more data */
         }
         .invoice-table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 10px; /* Smaller font size for table */
         }
         .invoice-table th, .invoice-table td {
             border: 1px solid #000;
-            padding: 8px;
+            padding: 4px; /* Smaller padding for compact table */
             text-align: left;
         }
         .total {
             text-align: right;
             margin-top: 20px;
+            font-size: 12px; /* Normal size for totals */
+        }
+        .header h2, .header p {
+            margin: 5px 0; /* Reduce spacing */
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>Invoice</h1>
+        <h2>Invoice for {{ shop_name }}</h2>
         <p>Date: {{ date }}</p>
+        <p>Shirt Price: {{ shirt_price }}</p>
+        <p>Pants Price: {{ pants_price }}</p>
+        <p>Safari Price: {{ safari_price }}</p>
     </div>
+
     <div class="invoice">
         <table class="invoice-table">
             <thead>
                 <tr>
-                    <th>Description</th>
-                    <th>Quantity</th>
-                    <th>Unit Price</th>
+                    <th>Date</th>
+                    <th>Shirts Updated</th>
+                    <th>Pants Updated</th>
+                    <th>Safari Updated</th>
                     <th>Total</th>
                 </tr>
             </thead>
             <tbody>
                 {% for item in items %}
                 <tr>
-                    <td>{{ item.description }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>{{ item.unit_price }}</td>
+                    <td>{{ item.date }}</td>
+                    <td>{{ item.shirts_updated }}</td>
+                    <td>{{ item.pants_updated }}</td>
+                    <td>{{ item.safari_updated }}</td>
                     <td>{{ item.total }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
     <div class="total">
-        <h3>Total Amount: ${{ total_amount }}</h3>
+        <h3>Total: ${{ total_amount }}</h3>
+        <h3>Remaining Balance: ${{ remaining_balance }}</h3>
+        <h3>Amount to Pay: ${{ total_amount_to_pay }}</h3>
     </div>
 </body>
 </html>
