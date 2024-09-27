@@ -55,18 +55,21 @@ class Shops_serializer(serializers.ModelSerializer):
 
         # Calculate total sum from related days
         total_sum = sum(Decimal(day.each_day_total) for day in instance.days.all())
+
+        # Subtract the amount paid from the total sum to get the updated balance
         updated_balance = total_sum - amount_paid
 
-        # Update the remaining balance using filter method
-        Shops.objects.filter(id=instance.id).update(remaining_balance=updated_balance)
-
-        # Step 5: Delete all day records after calculating the total
-        Day.objects.filter(shop=instance).delete()
+        # Update the instance with the new remaining balance
+        instance.remaining_balance = updated_balance
 
         # Save the instance
         instance.save()  # Save to update any other fields or changes
 
+        # Delete all day records after calculating the total
+        Day.objects.filter(shop=instance).delete()
+
         return super().update(instance, validated_data)
+
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
