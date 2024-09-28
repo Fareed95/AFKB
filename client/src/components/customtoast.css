@@ -1,0 +1,11 @@
+.Toastify__toast {
+    z-index: 9999; /* Ensures the toast appears above other elements */
+    background-color: white; /* Set a background color */
+    color: black; /* Set a text color */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Optional: adds shadow for better visibility */
+    transition: all 0.3s ease; /* Smooth transitions */
+  }
+
+  .Toastify__toast:hover {
+    transform: scale(1.05); /* Slight scale effect on hover */
+  }

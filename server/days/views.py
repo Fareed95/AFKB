@@ -13,10 +13,18 @@ class DayViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         shop_id = request.data.get('shop')
 
-        # Convert updated quantities to integers
-        shirts_updated = int(request.data.get('shirts_updated', 0))
-        pants_updated = int(request.data.get('pants_updated', 0))
-        safari_updated = int(request.data.get('safari_updated', 0))
+        # Retrieve updated quantities from request and handle empty cases
+        shirts_updated = request.data.get('shirts_updated', 0)
+        pants_updated = request.data.get('pants_updated', 0)
+        safari_updated = request.data.get('safari_updated', 0)
+
+        # Validate and convert to integers, defaulting to 0 if the value is invalid
+        try:
+            shirts_updated = int(shirts_updated) if shirts_updated else 0
+            pants_updated = int(pants_updated) if pants_updated else 0
+            safari_updated = int(safari_updated) if safari_updated else 0
+        except ValueError:
+            return Response({"error": "Invalid input for quantities."}, status=status.HTTP_400_BAD_REQUEST)
 
         date = timezone.now().date()
 
@@ -40,15 +48,11 @@ class DayViewSet(viewsets.ModelViewSet):
                 day_record.pants_updated += pants_updated
                 day_record.safari_updated += safari_updated
 
-            # Ensure price values are float
-            try:
-                shirt_price = float(shop_instance.shirt_price)
-                pants_price = float(shop_instance.pants_price)
-                safari_price = float(shop_instance.safari_price)
-            except ValueError as ve:
-                return Response({"error": f"Invalid price value: {ve}"}, status=status.HTTP_400_BAD_REQUEST)
-
             # Calculate total based on updated values
+            shirt_price = float(shop_instance.shirt_price or 0)
+            pants_price = float(shop_instance.pants_price or 0)
+            safari_price = float(shop_instance.safari_price or 0)
+
             day_record.each_day_total = (
                 (day_record.shirts_updated * shirt_price) +
                 (day_record.pants_updated * pants_price) +

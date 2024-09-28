@@ -17,10 +17,10 @@ import AddNewShop from '../pages/AddNewShop'; // Import the modal component
 const pages = [
   { name: 'Add New Shop', action: 'openAddNewShop' },
   { name: 'Github', link: 'https://github.com/Fareed95/AFKB', external: true },
-  { name: 'Developer', link: '#', external: false }
+  { name: 'Developer', link: 'https://www.linkedin.com/in/fareed-sayed-b39936280/', external: false }
 ];
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Logout'];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);

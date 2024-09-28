@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import ResponsiveAppBar from '../components/AppBar';
 import MediaCard from '../components/MediaCard';
+import AddNewShop from './AddNewShop'; // Import the AddNewShop component
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography'; // Import Typography for better text styling
+import { Box } from '@mui/material'; // Import Box for layout styling
+import Footer from '../components/Footer';
+
 
 function Home() {
   const [user, setUser] = useState(null);
+  const [open, setOpen] = useState(false);
 
+  // Fetch user data on mount
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem('jwt');
@@ -24,7 +32,6 @@ function Home() {
         const userData = await response.json();
         setUser(userData);
       } else {
-        // Handle errors (e.g., token expired)
         window.location.href = '/login';
       }
     };
@@ -32,33 +39,65 @@ function Home() {
     fetchUserData();
   }, []);
 
+  // Open "Add New Shop" Dialog
+  const handleAddShopClick = () => {
+    setOpen(true);
+  };
+
+  // Close the "Add New Shop" Dialog
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       <ResponsiveAppBar />
       <div style={{ padding: '20px', margin: '50px', textAlign: 'center' }}>
-        <h2>Home Page</h2>
         {user ? (
-          <div>
-            <p>Email: {user.email}</p>
-            <p>Name: {user.name}</p>
+          <Box>
+            {/* Welcome Message */}
+            <Typography variant="h4" gutterBottom>
+              Welcome, {user.name}!
+            </Typography>
+            <Typography variant="h6" color="textSecondary">
+              Your Email: {user.email}
+            </Typography>
 
-            {/* Loop through the user's shops and display each one */}
+            {/* Display Shops */}
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-              {user.shops.map((shop) => (
-                <MediaCard
-                  key={shop.id} // Unique key for each shop
-                  title={shop.name} // Pass shop name as title
-                  description={shop.description} // Pass shop description
-                  image="https://mui.com/static/images/cards/contemplative-reptile.jpg" // You can replace this with a dynamic image if available
-                  id={shop.id} // Pass shop ID to generate correct URL for billing
-                />
-              ))}
+              {user.shops && user.shops.length > 0 ? (
+                user.shops.map((shop) => (
+                  <MediaCard
+                    key={shop.id}
+                    title={shop.name}
+                    description={shop.description}
+                    image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
+                    id={shop.id} // Pass shop ID
+                  />
+                ))
+              ) : (
+                <p>No shops available.</p>
+              )}
             </div>
-          </div>
+
+            {/* Add New Shop Button */}
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddShopClick}
+              style={{ marginTop: '20px' }}
+            >
+              Add New Shop
+            </Button>
+
+            {/* Add New Shop Dialog */}
+            <AddNewShop open={open} handleClose={handleClose} userEmail={user.email} />
+          </Box>
         ) : (
           <p>Loading...</p>
         )}
       </div>
+      <Footer/>
     </>
   );
 }

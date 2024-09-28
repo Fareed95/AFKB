@@ -6,6 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
+import { toast } from 'react-toastify'; // Import toast
 
 // Styled components for a better aesthetic
 const StyledDialogTitle = styled(DialogTitle)({
@@ -27,17 +28,15 @@ const StyledButton = styled(Button)({
 });
 
 const AddNewShop = ({ open, handleClose, userEmail }) => {
-  // State for form fields
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     shirt_price: null,
     pants_price: null,
     safari_price: null,
-    amount_paid: null,
+    email: userEmail || "", // Initialize with userEmail or empty string
   });
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -46,16 +45,15 @@ const AddNewShop = ({ open, handleClose, userEmail }) => {
     });
   };
 
-  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const dataToSend = { ...formData };
 
-    // Include email in the form data
-    const dataToSend = { ...formData, email: userEmail };
+    // Log the data to be sent to the API
+    console.log('Data to send:', dataToSend);
 
-    // Send POST request
     try {
-      const response = await fetch("http://localhost:8000/api/shops/", {
+      const response = await fetch("http://127.0.0.1:8000/api/shops/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,15 +62,29 @@ const AddNewShop = ({ open, handleClose, userEmail }) => {
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        const errorData = await response.json();
+        console.error('Error response:', errorData);
+        throw new Error(`Network response was not ok: ${errorData.detail || errorData}`);
       }
 
-      // Optionally handle the response here
       const data = await response.json();
       console.log('Success:', data);
       handleClose(); // Close the modal after submission
+
+      // Show success toast with shop name
+      toast.success(`Shop "${formData.name}" added successfully!`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
+
     } catch (error) {
       console.error('Error:', error);
+      alert('Failed to add shop. Please check the console for more details.');
     }
   };
 
@@ -86,7 +98,7 @@ const AddNewShop = ({ open, handleClose, userEmail }) => {
             margin="dense"
             label="Shop Name"
             type="text"
-            name="name" // Added name attribute for easy handling
+            name="name"
             fullWidth
             variant="outlined"
             required
@@ -96,7 +108,7 @@ const AddNewShop = ({ open, handleClose, userEmail }) => {
             margin="dense"
             label="Description"
             type="text"
-            name="description" // Added name attribute for easy handling
+            name="description"
             fullWidth
             variant="outlined"
             required
@@ -106,7 +118,7 @@ const AddNewShop = ({ open, handleClose, userEmail }) => {
             margin="dense"
             label="Shirt Price"
             type="number"
-            name="shirt_price" // Added name attribute for easy handling
+            name="shirt_price"
             fullWidth
             variant="outlined"
             onChange={handleChange}
@@ -115,7 +127,7 @@ const AddNewShop = ({ open, handleClose, userEmail }) => {
             margin="dense"
             label="Pants Price"
             type="number"
-            name="pants_price" // Added name attribute for easy handling
+            name="pants_price"
             fullWidth
             variant="outlined"
             onChange={handleChange}
@@ -124,10 +136,21 @@ const AddNewShop = ({ open, handleClose, userEmail }) => {
             margin="dense"
             label="Safari Price"
             type="number"
-            name="safari_price" // Added name attribute for easy handling
+            name="safari_price"
             fullWidth
             variant="outlined"
             onChange={handleChange}
+          />
+          <StyledTextField
+            margin="dense"
+            label="Email"
+            type="email"
+            name="email"
+            fullWidth
+            variant="outlined"
+            value={formData.email}
+            onChange={handleChange}
+            required // Mark it as required if needed
           />
         </form>
       </DialogContent>
