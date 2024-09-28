@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import ResponsiveAppBar from '../components/AppBar';
 import MediaCard from '../components/MediaCard';
+import AddNewShop from './AddNewShop';// Import the AddNewShop component
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
 
 function Home() {
   const [user, setUser] = useState(null);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -24,13 +28,20 @@ function Home() {
         const userData = await response.json();
         setUser(userData);
       } else {
-        // Handle errors (e.g., token expired)
         window.location.href = '/login';
       }
     };
 
     fetchUserData();
   }, []);
+
+  const handleAddShopClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <>
@@ -42,18 +53,18 @@ function Home() {
             <p>Email: {user.email}</p>
             <p>Name: {user.name}</p>
 
-            {/* Loop through the user's shops and display each one */}
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {user.shops.map((shop) => (
                 <MediaCard
-                  key={shop.id} // Unique key for each shop
-                  title={shop.name} // Pass shop name as title
-                  description={shop.description} // Pass shop description
-                  image="https://mui.com/static/images/cards/contemplative-reptile.jpg" // You can replace this with a dynamic image if available
-                  id={shop.id} // Pass shop ID to generate correct URL for billing
+                  key={shop.id}
+                  title={shop.name}
+                  description={shop.description}
+                  image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
+                  id={shop.id}
                 />
               ))}
             </div>
+            <AddNewShop open={open} handleClose={handleClose} userEmail={user.email} />
           </div>
         ) : (
           <p>Loading...</p>
