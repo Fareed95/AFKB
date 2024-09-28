@@ -6,6 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
+import { toast } from 'react-toastify'; // Import toast
 
 // Styled components for a better aesthetic
 const StyledDialogTitle = styled(DialogTitle)({
@@ -69,7 +70,18 @@ const AddNewShop = ({ open, handleClose, userEmail }) => {
       const data = await response.json();
       console.log('Success:', data);
       handleClose(); // Close the modal after submission
-      alert("Shop added successfully!"); // Show success alert
+
+      // Show success toast with shop name
+      toast.success(`Shop "${formData.name}" added successfully!`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
+
     } catch (error) {
       console.error('Error:', error);
       alert('Failed to add shop. Please check the console for more details.');
