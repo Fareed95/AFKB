@@ -14,25 +14,27 @@ export default function SlotPropsSignIn() {
     const password = formData.get('password');
 
     try {
-      const response = await fetch('http://localhost:8000/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+        const response = await fetch('http://127.0.0.1:8000/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        });
 
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
+        if (!response.ok) {
+            throw new Error('Login failed');
+        }
 
-      const data = await response.json();
-      localStorage.setItem('jwt', data.jwt); // Store the token
-      navigate('/home');
+        const data = await response.json();
+        localStorage.setItem('jwt', data.jwt);
+        navigate('/home');
     } catch (error) {
-      alert(error.message);
+        alert(error.message);
+        console.error('Login error:', error);
     }
-  };
+};
+
 
   return (
     <AppProvider theme={theme}>

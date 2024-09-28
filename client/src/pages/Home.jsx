@@ -1,38 +1,40 @@
 import React, { useEffect, useState } from 'react';
-
+import ResponsiveAppBar from '../components/AppBar';
 function Home() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const token = localStorage.getItem('jwt');
-      if (!token) {
-        // Redirect to login if no token
-        window.location.href = '/login';
-        return;
-      }
+        const token = localStorage.getItem('jwt');
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
 
+        const response = await fetch('http://127.0.0.1:8000/api/user', {
+            method: 'GET', // Use GET method for fetching user data
+            headers: {
+                Authorization: `${token}`, // Ensure this is the correct format
+            },
+        });
 
-      const response = await fetch('http://localhost:8000/api/user', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
-      } else {
-        // Handle errors (e.g., token expired)
-        window.location.href = '/login';
-      }
+        if (response.ok) {
+            const userData = await response.json();
+            setUser(userData);
+        } else {
+            // Handle errors (e.g., token expired)
+            window.location.href = '/login';
+        }
     };
 
     fetchUserData();
-  }, []);
+}, []);
+
 
   return (
-    <div style={{ padding: '20px', textAlign: 'center' }}>
+    <>
+    <ResponsiveAppBar/>
+    <div style={{ padding: '20px', margin: '50px',textAlign: 'center' }}>
       <h2>Home Page</h2>
       {user ? (
         <div>
@@ -43,6 +45,7 @@ function Home() {
         <p>Loading...</p>
       )}
     </div>
+    </>
   );
 }
 
