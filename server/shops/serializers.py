@@ -61,16 +61,15 @@ class Shops_serializer(serializers.ModelSerializer):
         updated_balance = total_sum - amount_paid
 
         # Update the instance with the new remaining balance
-        instance.remaining_balance = updated_balance
+        instance.remaining_balance = max(updated_balance, Decimal('0.00'))  # Ensure balance is not negative
 
-        # Save the instance
-        instance.save()  # Save to update any other fields or changes
+        # Save the instance to update any other fields or changes
+        instance.save()
 
         # Delete all day records after calculating the total
         Day.objects.filter(shop=instance).delete()
 
         return super().update(instance, validated_data)
-
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)

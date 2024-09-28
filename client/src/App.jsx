@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import ResponsiveAppBar from './components/AppBar';
 import Login from './pages/Login'; // Import the Login component
 import Home from './pages/Home'; // Import the Home component
+import ShopHistoryPage from './pages/ShopHistory'; // Import the ShopHistoryPage component
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -37,6 +38,7 @@ function MainLayout() {
         <Route path="/" element={token ? <Home showToast={showToast} /> : <Navigate to="/login" />} />
         <Route path="/login" element={<Login showToast={showToast} />} />
         <Route path="/home" element={token ? <Home showToast={showToast} /> : <Navigate to="/login" />} />
+        <Route path="/shop-history/:shopId" element={<ShopHistoryPage />} /> {/* New route for ShopHistoryPage */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </>
