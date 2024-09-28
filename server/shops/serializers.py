@@ -16,6 +16,7 @@ class Shops_serializer(serializers.ModelSerializer):
     class Meta:
         model = Shops
         fields = [
+            'id',
             'name',
             'description',
             'shirt_price',
