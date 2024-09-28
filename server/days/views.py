@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Day
+from .models import Day, DayHistory  # Ensure you import the DayHistory model
 from .serializers import DaySerializer
 from shops.models import Shops
 from django.utils import timezone
@@ -57,6 +57,19 @@ class DayViewSet(viewsets.ModelViewSet):
 
             day_record.save()  # Save the updated record
 
+            # Create or update the history record
+            day_history, _ = DayHistory.objects.update_or_create(
+                shop=shop_instance,
+                date=date,
+                defaults={
+                    'shirts_updated': day_record.shirts_updated,
+                    'pants_updated': day_record.pants_updated,
+                    'safari_updated': day_record.safari_updated,
+                    'each_day_total': day_record.each_day_total,
+                }
+            )
+
+            # Serialize the day record for the response
             serializer = self.get_serializer(day_record)
             return Response(serializer.data)
 
