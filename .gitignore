@@ -37,7 +37,7 @@ __pycache__/
 # Django specific files
 *.env
 *.log
-db.sqlite3
+# db.sqlite3
 db.sqlite3-journal
 
 # If you're using PostgreSQL or MySQL databases, include their credentials file here
