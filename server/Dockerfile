@@ -29,8 +29,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application code
 COPY . .
 
+# Copy the entrypoint script and make it executable
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 # Expose the port Gunicorn will listen on
 EXPOSE 8000
 
-# Start Gunicorn and run migrations
-CMD ["sh", "-c", "python manage.py migrate && gunicorn --workers 3 --bind 0.0.0.0:8000 server.wsgi:application"]
+# Set the entrypoint to the entrypoint script
+ENTRYPOINT ["/entrypoint.sh"]
