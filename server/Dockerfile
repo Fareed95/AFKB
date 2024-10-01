@@ -32,5 +32,5 @@ COPY . .
 # Expose the port Gunicorn will listen on
 EXPOSE 8000
 
-# Start Gunicorn to serve Django app
-CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:8000", "server.wsgi:application"]
+# Start Gunicorn and run migrations
+CMD ["sh", "-c", "python manage.py migrate && gunicorn --workers 3 --bind 0.0.0.0:8000 server.wsgi:application"]
