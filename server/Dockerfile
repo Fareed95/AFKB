@@ -25,16 +25,14 @@ RUN apt-get update && apt-get install -y \
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+# Migration
+RUN co
 
 # Copy the rest of the application code
 COPY . .
 
-# Copy the entrypoint script and make it executable
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
 # Expose the port Gunicorn will listen on
 EXPOSE 8000
 
-# Set the entrypoint to the entrypoint script
-ENTRYPOINT ["/entrypoint.sh"]
+# Start Gunicorn to serve Django app
+CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:8000", "server.wsgi:application"]
