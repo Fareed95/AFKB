@@ -15,7 +15,7 @@ const AmountPaidModal = ({ open, handleClose, shopId }) => {
   // Fetch the shop data when the modal opens
   useEffect(() => {
     if (open && shopId) {
-      fetch(`http://localhost:8000/api/shops/${shopId}/`)
+      fetch(`http://http:54.211.219.118:8000/api/shops/${shopId}/`)
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -60,7 +60,7 @@ const AmountPaidModal = ({ open, handleClose, shopId }) => {
     console.log('Submitting data:', updatedData);
 
     // Make the PUT request to update the shop
-    fetch(`http://localhost:8000/api/shops/${shopId}/`, {
+    fetch(`http://http:54.211.219.118:8000/api/shops/${shopId}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
