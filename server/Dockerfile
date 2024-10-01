@@ -25,8 +25,6 @@ RUN apt-get update && apt-get install -y \
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-# Migration
-RUN co
 
 # Copy the rest of the application code
 COPY . .
