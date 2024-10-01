@@ -23,13 +23,16 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
     '0.0.0.0',
+    '54.211.219.118'
     ]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    'http://54.211.219.118:5173'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
+    'http://54.211.219.118:5173'
 
 ]
 
