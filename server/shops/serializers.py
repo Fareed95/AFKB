@@ -13,6 +13,7 @@ class Shops_serializer(serializers.ModelSerializer):
     amount_to_bill = serializers.FloatField(read_only=True)
     amount_paid = serializers.FloatField(write_only=True, required=False)
     remaining_balance = serializers.FloatField(read_only=True)
+
     class Meta:
         model = Shops
         fields = [
@@ -54,20 +55,22 @@ class Shops_serializer(serializers.ModelSerializer):
             except User.DoesNotExist:
                 raise serializers.ValidationError(f"No user found with email {user_email}")
 
-        # Calculate total sum from related days
+        # Calculate total sum from current `days`
         total_sum = sum(Decimal(day.each_day_total) for day in instance.days.all())
 
-        # Subtract the amount paid from the total sum to get the updated balance
-        updated_balance = total_sum - amount_paid
+        # Update remaining balance by subtracting the paid amount
+        updated_balance = (instance.remaining_balance or total_sum) - amount_paid
+        instance.remaining_balance = max(updated_balance, Decimal('0.00'))
 
-        # Update the instance with the new remaining balance
-        instance.remaining_balance = max(updated_balance, Decimal('0.00'))  # Ensure balance is not negative
+        # Preserve existing day histories and append new day data
+        new_day_history = list(instance.days.all())  # Current days to be added to history
+        instance.day_histories.add(*new_day_history)  # Append to day histories
 
-        # Save the instance to update any other fields or changes
+        # Clear `days` after adding to `day_histories`
+        instance.days.clear()
+
+        # Save the instance with the updated balance and histories
         instance.save()
-
-        # Delete all day records after calculating the total
-        Day.objects.filter(shop=instance).delete()
 
         return super().update(instance, validated_data)
 
@@ -75,6 +78,8 @@ class Shops_serializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         total_sum = sum(day['each_day_total'] for day in representation['days'])
         remaining_balance = float(representation.get('remaining_balance', 0.0))
+
+        # Adjust the total and amount to bill calculations
         representation['total'] = total_sum
         representation['amount_to_bill'] = total_sum + remaining_balance
         return representation
