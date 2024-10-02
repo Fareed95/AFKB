@@ -16,7 +16,7 @@ const ShopHistoryPage = () => {
           window.location.href = '/login';
           return;
         }
-        const response = await fetch('http://54.211.219.118:8000/api/user', {
+        const response = await fetch('https://afkb.onrender.com//api/user', {
           method: 'GET',
           headers: {
             Authorization: `${token}`,

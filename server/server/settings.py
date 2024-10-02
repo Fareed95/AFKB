@@ -23,16 +23,20 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
     '0.0.0.0',
-    '54.211.219.118'
+    '54.211.219.118',
+    'https://afkb.onrender.com/',
+
     ]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    'http://54.211.219.118:5173'
+    'http://54.211.219.118:5173',
+    'https://afkb.vercel.app',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
-    'http://54.211.219.118:5173'
+    'http://54.211.219.118:5173',
+    'https://afkb.vercel.app'
 
 ]
 
