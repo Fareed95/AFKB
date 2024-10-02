@@ -22,7 +22,7 @@ const MediaCard = ({ title, description, image, id }) => {
   };
 
   const handleGenerateBill = () => {
-    window.location.href = `http://http:54.211.219.118:8000/api/invoice/${id}/`;
+    window.location.href = `https://afkb.onrender.com//api/invoice/${id}/`;
   };
 
   const handleAmountPaidClick = () => {
