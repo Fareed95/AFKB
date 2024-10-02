@@ -14,7 +14,7 @@ export default function SlotPropsSignIn() {
     const password = formData.get('password');
 
     try {
-        const response = await fetch('https://afkb.onrender.com//api/login', {
+        const response = await fetch('https://afkb.onrender.com/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
