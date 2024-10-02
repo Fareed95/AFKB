@@ -25,6 +25,7 @@ ALLOWED_HOSTS = [
     '0.0.0.0',
     '54.211.219.118',
     'https://afkb.onrender.com/',
+    'afkb.onrender.com'
 
     ]
 CORS_ALLOWED_ORIGINS = [
