@@ -33,4 +33,4 @@ COPY . .
 EXPOSE 8000
 
 # Start Gunicorn to serve Django app
-CMD ["./entrypoint.sh"]
+CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:8000", "server.wsgi:application"]
