@@ -24,7 +24,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '0.0.0.0',
     '54.211.219.118',
-    'https://afkb.onrender.com/',
+    'https://afkb.onrender.com',
     'afkb.onrender.com'
 
     ]
