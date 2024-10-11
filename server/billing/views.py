@@ -4,11 +4,13 @@ from weasyprint import HTML
 from shops.models import Shops
 from days.models import Day # Assuming Day model exists
 import datetime
+from django.shortcuts import get_object_or_404
+
 
 def generate_invoice(request, shop_id):
     # Fetch the shop and related day data
-    shop = Shops.objects.get(id=shop_id)
-    days = Day.objects.filter(shop=shop)  # Assuming Day has a ForeignKey to Shop
+    shop_instance = get_object_or_404(Shops, pk=shop_id)
+    days = Day.objects.filter(shop=shop_instance)  # Assuming Day has a ForeignKey to Shop
 
     # Prepare data for the invoice
     items = []
@@ -16,9 +18,9 @@ def generate_invoice(request, shop_id):
 
     for day in days:
         # Calculate the total for each day based on updated clothes
-        total_for_day = (day.shirts_updated * shop.shirt_price) + \
-                        (day.pants_updated * shop.pants_price) + \
-                        (day.safari_updated * shop.safari_price)
+        total_for_day = (day.shirts_updated * shop_instance.shirt_price) + \
+                        (day.pants_updated * shop_instance.pants_price) + \
+                        (day.safari_updated * shop_instance.safari_price)
         total_amount += total_for_day
         items.append({
             'date': day.date,
@@ -29,15 +31,15 @@ def generate_invoice(request, shop_id):
         })
 
     # Final total: Add the remaining balance to the total amount
-    total_amount_to_pay = total_amount + shop.remaining_balance
+    total_amount_to_pay = total_amount + shop_instance.remaining_balance
 
     # Context for rendering the template
     context = {
-        'shop_name': shop.name,
-        'shirt_price': shop.shirt_price,
-        'pants_price': shop.pants_price,
-        'safari_price': shop.safari_price,
-        'remaining_balance': shop.remaining_balance,
+        'shop_name': shop_instance.name,
+        'shirt_price': shop_instance.shirt_price,
+        'pants_price': shop_instance.pants_price,
+        'safari_price': shop_instance.safari_price,
+        'remaining_balance': shop_instance.remaining_balance,
         'items': items,
         'total_amount': total_amount,
         'total_amount_to_pay': total_amount_to_pay,
