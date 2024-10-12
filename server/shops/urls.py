@@ -1,11 +1,7 @@
-from django.urls import path,include
+from django.urls import path
 from . import views
-from rest_framework.routers import  DefaultRouter
-
-router  = DefaultRouter()
-router.register(r'shops',views.ShopsViewSet,basename='users')
 
 urlpatterns = [
-    path('',include(router.urls)),
+    path('shops/', views.ShopsViewSet.as_view()),  # For listing and creating
+    path('shops/<int:pk>/', views.ShopsViewSet.as_view()),  # For retrieving, updating, or deleting a specific shop
 ]
-
