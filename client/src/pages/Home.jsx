@@ -21,7 +21,7 @@ function Home() {
         return;
       }
 
-      const response = await fetch('https://afkb.onrender.com/api/user', {
+      const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/user`, {
         method: 'GET',
         headers: {
           Authorization: `${token}`,

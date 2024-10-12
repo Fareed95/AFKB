@@ -1,14 +1,14 @@
 myenv
 venv
 .myenv
-.env
+
 .venv
 __pycache__
 /venv
 /myenv
 # --- General ---
 node_modules/
-.env
+# .env
 .env.local
 .env.*.local
 .DS_Store
@@ -35,7 +35,7 @@ __pycache__/
 *$py.class
 
 # Django specific files
-*.env
+
 *.log
 # db.sqlite3
 db.sqlite3-journal
@@ -57,7 +57,6 @@ static/
 venv/
 myenv/
 env/
-*.env
 
 # Python compiled files
 *.pyc
