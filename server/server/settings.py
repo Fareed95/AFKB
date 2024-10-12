@@ -24,7 +24,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '0.0.0.0',
     '54.211.219.118',
-    'https://afkb.onrender.com',
+    '${import.meta.env.VITE_API_ENDPOINT}',
     'afkb.onrender.com'
 
     ]

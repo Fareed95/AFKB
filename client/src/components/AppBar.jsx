@@ -12,7 +12,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import AddNewShop from '../pages/AddNewShop'; // Import the modal component
+import AddNewShop from '../pages/AddNewShop';
+import { useNavigate } from 'react-router-dom'; // To navigate on logout
 
 const pages = [
   { name: 'Add New Shop', action: 'openAddNewShop' },
@@ -20,12 +21,11 @@ const pages = [
   { name: 'Developer', link: 'https://www.linkedin.com/in/fareed-sayed-b39936280/', external: false }
 ];
 
-const settings = ['Logout'];
-
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [openModal, setOpenModal] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -51,11 +51,19 @@ function ResponsiveAppBar() {
     setOpenModal(false);
   };
 
+  const handleLogout = () => {
+    // Clear JWT token and navigate to the login page
+    localStorage.removeItem('jwt');
+    navigate('/login'); // Assuming you have a login route
+  };
+
+  const isLoggedIn = !!localStorage.getItem('jwt'); // Check if JWT token exists
+
   return (
     <>
       <AppBar position="fixed" sx={{
-        background: 'linear-gradient(to right, #4a90e2, #9013fe)', // Gradient background
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)', // Slight shadow
+        background: 'linear-gradient(to right, #4a90e2, #9013fe)',
+        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
       }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
@@ -140,27 +148,14 @@ function ResponsiveAppBar() {
 
             {/* User Menu */}
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
-                </IconButton>
+              <Tooltip title={isLoggedIn ? 'Logout' : 'Login'}>
+                <Button
+                  sx={{ color: 'white' }}
+                  onClick={isLoggedIn ? handleLogout : () => navigate('/login')}
+                >
+                  {isLoggedIn ? 'Logout' : 'Login'}
+                </Button>
               </Tooltip>
-              <Menu
-                sx={{ mt: '45px' }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                keepMounted
-                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
             </Box>
           </Toolbar>
         </Container>

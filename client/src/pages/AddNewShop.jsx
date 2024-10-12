@@ -53,7 +53,7 @@ const AddNewShop = ({ open, handleClose, userEmail }) => {
     console.log('Data to send:', dataToSend);
 
     try {
-      const response = await fetch("https://afkb.onrender.com/api/shops/", {
+      const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/shops/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

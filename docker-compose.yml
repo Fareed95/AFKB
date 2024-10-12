@@ -9,6 +9,9 @@ services:
       - "5173:5173"  # Map client port to localhost
     networks:
       - app-network
+    env_file:
+      - ./.env  # Load client-specific environment variables
+
 
   server:
     build:
