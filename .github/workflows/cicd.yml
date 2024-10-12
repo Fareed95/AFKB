@@ -1,0 +1,55 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build and push client Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./client
+        tags: fareed95/afkb-client:latest
+
+    - name: Build and push server Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./server
+        tags: fareed95/afkb-server:latest
+        build-args: |
+          DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
+          DJANGO_DEBUG=${{ secrets.DJANGO_DEBUG }}
+          # Add other secrets as needed
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Deploy to Render
+      env:
+        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+        DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+        # Add other secrets as needed
+      run: |
+        curl -X POST https://api.render.com/deploy/srv-crufcp5umphs73eme8i0?key=Z13ugoo-l70
